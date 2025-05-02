@@ -9,11 +9,12 @@ const items = [
   { id: 4, name: 'Brain Overdrive', cost: 1000, multiplier: 20, description: '20x points per click' },
 ];
 
+export { items };
+
 const Shop = ({ points, onPurchase, ownedItems }) => {
   return (
     <View style={styles.shopContainer}>
       <View style={styles.headerContainer}>
-        <Text style={styles.itemShopTitle}>Item Shop</Text>
         <Text style={styles.pointsAvailable}>{points} Aura</Text>
       </View>
       <ScrollView style={styles.scrollContainer}>

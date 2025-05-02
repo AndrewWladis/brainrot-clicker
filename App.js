@@ -1,19 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Animated, Dimensions } from 'react-native';
 import { useState, useRef, useEffect } from 'react';
 import styles from './styles';
-import Shop from './Shop';
+import Shop, { items } from './Shop';
 
 const flavorTexts = ['Cooking...', 'Hawking Tuah...', 'Sigmaing the Sigma on the wall...', 'Unfollowing Vexbolts...', 'Raising my yayaya...', 'Playing these games before...', 'Finding those who know...', 'Holding space...']
 const emojis = ['💀', '👽', '🤖', '👅', '🫱', '🖕', '🗣️', '🥷', '🧜‍♂️', '👯', '🧢', '🫃', '🌝', '⚓️', '🎋', '🪵', '🍃', '🌾', '🗿', '🪫', '🥀', '🍆']
 
 export default function App() {
   const [points, setPoints] = useState(0);
-  const [flavorText, setFlavorText] = useState('');
   const [randomEmoji, setRandomEmoji] = useState('');
-  const [showShop, setShowShop] = useState(false);
+  const [isShopExpanded, setIsShopExpanded] = useState(false);
   const [ownedItems, setOwnedItems] = useState({});
+  const [screenHeight, setScreenHeight] = useState(Dimensions.get('window').height);
   const scaleAnim = useRef(new Animated.Value(1)).current;
+  const shopHeightAnim = useRef(new Animated.Value(100)).current;
+  
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener('change', ({ window }) => {
+      setScreenHeight(window.height);
+    });
+
+    return () => subscription?.remove();
+  }, []);
+
+  const toggleShop = () => {
+    const toValue = isShopExpanded ? 100 : screenHeight * 0.8;
+    Animated.spring(shopHeightAnim, {
+      toValue,
+      useNativeDriver: false,
+      friction: 8,
+      tension: 40,
+    }).start();
+    setIsShopExpanded(!isShopExpanded);
+  };
 
   const changeEmoji = () => {
     let newEmoji = emojis[Math.floor(Math.random() * emojis.length)];
@@ -30,7 +51,7 @@ export default function App() {
 
   const calculateMultiplier = () => {
     return Object.entries(ownedItems).reduce((total, [itemId, count]) => {
-      const item = Shop.items.find(i => i.id === parseInt(itemId));
+      const item = items.find(i => i.id === parseInt(itemId));
       return total + (item ? item.multiplier * count : 0);
     }, 1);
   };
@@ -64,14 +85,6 @@ export default function App() {
     const multiplier = calculateMultiplier();
     setPoints(prev => prev + multiplier);
 
-    // Show random flavor text
-    const randomText = flavorTexts[Math.floor(Math.random() * flavorTexts.length)];
-    setFlavorText(randomText);
-    
-    // Clear flavor text after 2 seconds
-    setTimeout(() => {
-      setFlavorText('');
-    }, 2000);
   };
 
   return (
@@ -79,7 +92,7 @@ export default function App() {
       <StatusBar style="light" />
       
       <View style={styles.pointsContainer}>
-        <Text style={styles.pointsText}>{points}</Text>
+        <Text style={styles.pointsText}>{points.toLocaleString()}</Text>
       </View>
 
       <TouchableOpacity onPress={handleTap}>
@@ -88,24 +101,24 @@ export default function App() {
         </Animated.View>
       </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.shopButton}
-        onPress={() => setShowShop(!showShop)}
-      >
-        <Text style={styles.shopButtonText}>{showShop ? 'Close Item Shop' : 'Item Shop'}</Text>
-      </TouchableOpacity>
+      <Animated.View style={[styles.shopContainer, { height: shopHeightAnim }]}>
+        <TouchableOpacity 
+          style={styles.shopHeader}
+          onPress={toggleShop}
+        >
+          <Text style={styles.shopButtonText}>
+            {isShopExpanded ? '▼  Item Shop' : '▶  Item Shop'}
+          </Text>
+        </TouchableOpacity>
 
-      {showShop && (
-        <Shop 
-          points={points}
-          onPurchase={handlePurchase}
-          ownedItems={ownedItems}
-        />
-      )}
-
-      {flavorText ? (
-        <Text style={styles.flavorText}>{flavorText}</Text>
-      ) : null}
+        <View style={styles.shopContent}>
+          <Shop 
+            points={points}
+            onPurchase={handlePurchase}
+            ownedItems={ownedItems}
+          />
+        </View>
+      </Animated.View>
     </View>
   );
 }
