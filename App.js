@@ -25,6 +25,22 @@ export default function App() {
     return () => subscription?.remove();
   }, []);
 
+  // Set up per second points generation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const perSecondPoints = Object.entries(ownedItems).reduce((total, [itemId, count]) => {
+        const item = items.find(i => i.id === parseInt(itemId));
+        return total + (item && item.type === 'perSecond' ? item.value * count : 0);
+      }, 0);
+      
+      if (perSecondPoints > 0) {
+        setPoints(prev => prev + perSecondPoints);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [ownedItems]);
+
   const toggleShop = () => {
     const toValue = isShopExpanded ? 100 : screenHeight * 0.8;
     Animated.spring(shopHeightAnim, {
@@ -49,11 +65,19 @@ export default function App() {
     changeEmoji();
   }, [points]);
 
-  const calculateMultiplier = () => {
-    return Object.entries(ownedItems).reduce((total, [itemId, count]) => {
+  const calculateClickValue = () => {
+    const baseValue = 1;
+    const multiplier = Object.entries(ownedItems).reduce((total, [itemId, count]) => {
       const item = items.find(i => i.id === parseInt(itemId));
-      return total + (item ? item.multiplier * count : 0);
+      return total + (item && item.type === 'multiplier' ? item.value * count : 0);
     }, 1);
+
+    const clickBonus = Object.entries(ownedItems).reduce((total, [itemId, count]) => {
+      const item = items.find(i => i.id === parseInt(itemId));
+      return total + (item && item.type === 'clickBonus' ? item.value * count : 0);
+    }, 0);
+
+    return (baseValue * multiplier) + clickBonus;
   };
 
   const handlePurchase = (item) => {
@@ -81,10 +105,9 @@ export default function App() {
       }),
     ]).start();
 
-    // Add points with multiplier
-    const multiplier = calculateMultiplier();
-    setPoints(prev => prev + multiplier);
-
+    // Add points with all effects
+    const clickValue = calculateClickValue();
+    setPoints(prev => prev + clickValue);
   };
 
   return (
@@ -101,7 +124,7 @@ export default function App() {
         </Animated.View>
       </TouchableOpacity>
 
-      <Animated.View style={[styles.shopContainer, { height: shopHeightAnim }]}>
+      <Animated.View style={[styles.shopContainer, { height: shopHeightAnim, bottom: isShopExpanded ? -shopHeightAnim : 0 }]}>
         <TouchableOpacity 
           style={styles.shopHeader}
           onPress={toggleShop}

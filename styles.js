@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
   shopContainer: {
     position: 'absolute',
     alignContent: 'flex-start',
-    bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: '#2a2a2a',
@@ -101,12 +100,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#333',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   shopContent: {
     flex: 1,
-    overflow: 'hidden',
-    alignContent: 'flex-start'
+    overflow: 'scroll',
   },
   headerContainer: {
     padding: 15,
@@ -134,6 +132,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     overflow: 'hidden',
+  },
+  blankItem: {
+    backgroundColor: 'rgba(42, 42, 42, 0.3)',
+    borderColor: 'rgba(255, 0, 255, 0.2)',
+    height: 80, // Match the height of other items
   },
   available: {
     backgroundColor: '#2a2a2a',
