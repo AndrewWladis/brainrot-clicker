@@ -124,7 +124,7 @@ export default function App() {
         </Animated.View>
       </TouchableOpacity>
 
-      <Animated.View style={[styles.shopContainer, { height: shopHeightAnim, bottom: isShopExpanded ? -shopHeightAnim : 0 }]}>
+      <Animated.View style={[styles.shopContainer, { height: shopHeightAnim }]}>
         <TouchableOpacity 
           style={styles.shopHeader}
           onPress={toggleShop}

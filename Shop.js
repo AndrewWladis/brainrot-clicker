@@ -37,6 +37,14 @@ const items = [
     value: 20, 
     description: '+20 points per click' 
   },
+  { 
+    id: 456, 
+    name: 'IVE PLAYED THESE GAMES BEFORE', 
+    cost: 40000, 
+    type: 'clickBonus',
+    value: 456, 
+    description: '+456 points per click' 
+  },
   // Per second items
   { 
     id: 5, 

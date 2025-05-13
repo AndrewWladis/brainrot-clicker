@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     alignContent: 'flex-start',
     left: 0,
     right: 0,
+    bottom: 0,
     backgroundColor: '#2a2a2a',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 10,
     elevation: 5,
+    height: '100%',
     overflow: 'hidden',
   },
   shopHeader: {
@@ -119,6 +121,7 @@ const styles = StyleSheet.create({
     color: '#ff00ff',
   },
   pointsAvailable: {
+    marginTop: 15,
     fontSize: 30,
     color: '#00ff00',
     fontFamily: 'monospace',
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 15,
+    paddingBottom: 30,
   },
   item: {
     marginBottom: 15,
@@ -157,7 +161,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   itemName: {
-    fontSize: 20,
+    fontSize: 15,
     color: '#fff',
     fontFamily: 'monospace',
     fontWeight: 'bold',
