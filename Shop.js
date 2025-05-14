@@ -6,61 +6,53 @@ const items = [
   // Click multiplier items
   { 
     id: 1, 
-    name: 'Brain Boost', 
-    cost: 10, 
+    name: 'We gotta do at least 20k bro', 
+    cost: 25, 
     type: 'multiplier',
     value: 2, 
     description: 'Double your points per click' 
   },
-  { 
-    id: 2, 
-    name: 'Brain Blast', 
-    cost: 50, 
-    type: 'multiplier',
-    value: 5, 
-    description: '5x points per click' 
-  },
   // Per click bonus items
-  { 
-    id: 3, 
-    name: 'Quick Tap', 
-    cost: 25, 
-    type: 'clickBonus',
-    value: 5, 
-    description: '+5 points per click' 
-  },
-  { 
-    id: 4, 
-    name: 'Power Tap', 
-    cost: 100, 
-    type: 'clickBonus',
-    value: 20, 
-    description: '+20 points per click' 
-  },
   { 
     id: 456, 
     name: 'IVE PLAYED THESE GAMES BEFORE', 
-    cost: 40000, 
+    cost: 45600, 
     type: 'clickBonus',
     value: 456, 
+    lightColor: '#ed93de',
+    darkColor: '#037a76',
     description: '+456 points per click' 
+  },
+  { 
+    id: 808, 
+    name: '808 CRASHOUT', 
+    cost: 80800, 
+    type: 'clickBonus',
+    value: 808, 
+    lightColor: '#e6575e',
+    darkColor: '1a1a1a',
+    description: '+808 points per click' 
   },
   // Per second items
   { 
-    id: 5, 
-    name: 'Auto Brain', 
-    cost: 75, 
+    id: 67, 
+    name: 'SIX SEVEN!!!!', 
+    cost: 67000, 
     type: 'perSecond',
-    value: 1, 
-    description: 'Generate 1 point per second' 
+    value: 67, 
+    darkColor: '#f5e3ba',
+    lightColor: '#b5af0e',
+    description: 'Generate 67 points per second' 
   },
   { 
-    id: 6, 
-    name: 'Brain Factory', 
+    id: 2, 
+    name: 'Escape the Matrix', 
     cost: 300, 
     type: 'perSecond',
-    value: 5, 
-    description: 'Generate 5 points per second' 
+    value: 3, 
+    lightColor: '#57e657',
+    darkColor: 'black',
+    description: 'Generate 3 points per second' 
   },
 ];
 
@@ -80,6 +72,34 @@ const Shop = ({ points, onPurchase, ownedItems }) => {
     }
   };
 
+  const getItemStyle = (item, isAvailable) => {
+    const baseStyle = [styles.item];
+    if (item.lightColor && item.darkColor) {
+      baseStyle.push({
+        backgroundColor: item.darkColor,
+        borderColor: item.lightColor,
+      });
+    } else {
+      baseStyle.push(isAvailable ? styles.available : styles.unavailable);
+    }
+    return baseStyle;
+  };
+
+  const getCostStyle = (item, isAvailable) => {
+    const baseStyle = [styles.itemCost];
+    if (item.lightColor) {
+      baseStyle.push({
+        color: isAvailable ? item.lightColor : item.lightColor,
+        textShadowColor: isAvailable ? item.lightColor : 'transparent',
+        textShadowOffset: { width: 0, height: 0 },
+        textShadowRadius: 3,
+      });
+    } else {
+      baseStyle.push(isAvailable ? styles.costAvailable : styles.costUnavailable);
+    }
+    return baseStyle;
+  };
+
   // Sort items by cost
   const sortedItems = [...items].sort((a, b) => a.cost - b.cost);
 
@@ -89,37 +109,65 @@ const Shop = ({ points, onPurchase, ownedItems }) => {
         <Text style={styles.pointsAvailable}>{points} Aura</Text>
       </View>
       <ScrollView style={styles.scrollContainer}>
-        {sortedItems.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={[
-              styles.item,
-              points >= item.cost ? styles.available : styles.unavailable,
-            ]}
-            onPress={() => points >= item.cost && onPurchase(item)}
-            disabled={points < item.cost}
-          >
-            <View style={styles.itemContent}>
-              <View style={styles.itemHeader}>
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.multiplierText}>{getEffectText(item)}</Text>
-              </View>
-              <Text style={styles.itemDescription}>{item.description}</Text>
-              <View style={styles.itemFooter}>
+        {sortedItems.map((item) => {
+          const isAvailable = points >= item.cost;
+          return (
+            <TouchableOpacity
+              key={item.id}
+              style={getItemStyle(item, isAvailable)}
+              onPress={() => isAvailable && onPurchase(item)}
+              disabled={!isAvailable}
+            >
+              <View style={styles.itemContent}>
+                <View style={styles.itemHeader}>
+                  <Text style={[
+                    styles.itemName,
+                    item.lightColor && { color: item.lightColor }
+                  ]}>
+                    {item.name}
+                  </Text>
+                  <Text style={[
+                    styles.multiplierText,
+                    item.lightColor && {
+                      color: item.lightColor,
+                      textShadowColor: item.lightColor
+                    }
+                  ]}>
+                    {getEffectText(item)}
+                  </Text>
+                </View>
                 <Text style={[
-                  styles.itemCost,
-                  points >= item.cost ? styles.costAvailable : styles.costUnavailable
+                  styles.itemDescription,
+                  item.lightColor && { color: item.lightColor }
                 ]}>
-                  {item.cost} aura
+                  {item.description}
                 </Text>
-                <View style={styles.ownedContainer}>
-                  <Text style={styles.ownedLabel}>Owned:</Text>
-                  <Text style={styles.ownedCount}>{ownedItems[item.id] || 0}</Text>
+                <View style={styles.itemFooter}>
+                  <Text style={getCostStyle(item, isAvailable)}>
+                    Cost: {item.cost} aura
+                  </Text>
+                  <View style={styles.ownedContainer}>
+                    <Text style={[
+                      styles.ownedLabel,
+                      item.lightColor && { color: item.lightColor }
+                    ]}>
+                      Owned:
+                    </Text>
+                    <Text style={[
+                      styles.ownedCount,
+                      item.lightColor && {
+                        color: item.lightColor,
+                        textShadowColor: item.lightColor
+                      }
+                    ]}>
+                      {ownedItems[item.id] || 0}
+                    </Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </View>
   );

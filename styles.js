@@ -134,13 +134,8 @@ const styles = StyleSheet.create({
   item: {
     marginBottom: 15,
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 3,
     overflow: 'hidden',
-  },
-  blankItem: {
-    backgroundColor: 'rgba(42, 42, 42, 0.3)',
-    borderColor: 'rgba(255, 0, 255, 0.2)',
-    height: 80, // Match the height of other items
   },
   available: {
     backgroundColor: '#2a2a2a',
@@ -176,8 +171,9 @@ const styles = StyleSheet.create({
     textShadowRadius: 5,
   },
   itemDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#00ff00',
+    fontWeight: 'bold',
     fontFamily: 'monospace',
     marginBottom: 8,
   },
@@ -188,7 +184,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   itemCost: {
-    fontSize: 16,
+    fontSize: 20,
     fontFamily: 'monospace',
     fontWeight: 'bold',
   },
