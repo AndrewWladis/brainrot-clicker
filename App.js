@@ -5,7 +5,7 @@ import styles from './styles';
 import Shop, { items } from './Shop';
 
 const flavorTexts = ['Cooking...', 'Hawking Tuah...', 'Sigmaing the Sigma on the wall...', 'Unfollowing Vexbolts...', 'Raising my yayaya...', 'Playing these games before...', 'Finding those who know...', 'Holding space...']
-const emojis = ['💀', '👽', '🤖', '👅', '🫱', '🖕', '🗣️', '🥷', '🧜‍♂️', '👯', '🧢', '🫃', '🌝', '⚓️', '🎋', '🪵', '🍃', '🌾', '🗿', '🪫', '🥀', '🍆']
+const emojis = ['💀', '👽', '🤖', '👅', '🫱', '🖕', '🗣️', '🧜‍♂️', '👯', '🧢', '🫃', '🌝', '⚓️', '🎋', '🪵', '🍃', '🌾', '🗿', '🪫', '🥀', '🍆']
 
 export default function App() {
   const [points, setPoints] = useState(0);
