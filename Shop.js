@@ -6,11 +6,23 @@ const items = [
   // Click multiplier items
   { 
     id: 1, 
-    name: 'We gotta do at least 20k bro', 
+    name: 'We gotta do at least 10k bro', 
     cost: 25, 
     type: 'multiplier',
+    lightColor: '#e3e3e3',
+    darkColor: '#121212',
     value: 2, 
     description: 'Double your points per click' 
+  },
+  { 
+    id: 3, 
+    name: 'I call it a 3x multiplier, ryhmes with Grug', 
+    cost: 50, 
+    type: 'multiplier',
+    lightColor: '#2e1c0b',
+    darkColor: '#c7a685',
+    value: 3, 
+    description: 'Triple your points per click' 
   },
   // Per click bonus items
   { 
@@ -34,6 +46,16 @@ const items = [
     description: '+808 points per click' 
   },
   // Per second items
+  { 
+    id: 4, 
+    name: 'MUSTARD!', 
+    cost: 100, 
+    type: 'perSecond',
+    value: 1, 
+    darkColor: '#e6da40',
+    lightColor: '#595847',
+    description: 'Generate 1 point per second' 
+  },
   { 
     id: 67, 
     name: 'SIX SEVEN!!!!', 
@@ -76,7 +98,7 @@ const Shop = ({ points, onPurchase, ownedItems }) => {
     const baseStyle = [styles.item];
     if (item.lightColor && item.darkColor) {
       baseStyle.push({
-        backgroundColor: item.darkColor,
+        backgroundColor: isAvailable ? item.darkColor : `${item.darkColor}80`, // 50% opacity when unavailable
         borderColor: item.lightColor,
       });
     } else {

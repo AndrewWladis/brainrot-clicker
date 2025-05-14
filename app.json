@@ -1,28 +1,34 @@
 {
   "expo": {
-    "name": "Brainrot Clicker",
+    "name": "Brainrot Blast",
     "slug": "brainrot-clicker",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/baka.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/baka.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2a2a2a"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.andywladis.brainrotclicker"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/baka.png",
+        "backgroundColor": "#2a2a2a"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/baka.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8856993b-edd9-4c41-9a87-8fcdb536b637"
+      }
     }
   }
 }
